@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/header :: head(${'Игра ' + game.getName()})}"></head>
+<body>
+<div th:replace="fragments/header :: user_navbar"></div>
+<div class="container">
+    <div class="card mb-3 mt-5">
+        <div class="row col-md-12 justify-content-center">
+            <img th:src="@{'/img/'+${game.getImage()}}" class="card-img-top"
+                 style="max-height: 350px; max-width: 500px;" alt="нет картинки">
+        </div>
+        <div class="card-body">
+            <h2 class="card-title" th:text="${game.getName()}"></h2>
+            <p class="card-text" th:text="${game.getDescription()}"></p>
+            <div class="row">
+                <p class="h6" th:text="${'Цена: ' + game.getPrice() + ' руб.'}"></p>
+            </div>
+            <a th:if="${inBasket}" type="button" class="btn btn-success mt-3" href="/user/basket">В корзине</a>
+            <form th:unless="${inBasket}" th:action="@{user/game/add}" th:method="POST">
+                <input type="hidden" name="id" th:value="${game.getId()}">
+                <button type="submit" class="btn btn-primary mt-3">Добавить в корзину</button>
+            </form>
+        </div>
+    </div>
+
+    <!--  Комментарии-->
+    <section style="background-color: #eee;">
+        <div class="container my-5 py-5">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-12 col-lg-10 col-xl-8">
+                    <h2>Комментарии:</h2>
+                    <div class="card">
+                        <div th:each="comment: ${game.getComments()}">
+                            <div th:replace="~{fragments/comment :: comment(${comment.getUser().getLogin()}, ${comment.getInfo()})}"></div>
+                        </div>
+                        <div class="card-footer py-3 border-0" style="background-color: #f8f9fa;">
+                            <form th:action="@{/user/comment}" th:method="POST">
+                                <input type="hidden" th:value="${game.getId()}" name="id">
+                                <div class="d-flex flex-start w-100">
+                                    <div class="form-outline w-100">
+                                        <label class="form-label" for="textAreaExample">Комментарий...</label>
+                                        <textarea class="form-control" id="textAreaExample" rows="4"
+                                                  style="background: #fff;" name="text"></textarea>
+                                    </div>
+                                </div>
+                                <div class="float-end mt-2 pt-1">
+                                    <button type="submit" class="btn btn-primary btn-sm">Отправить</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

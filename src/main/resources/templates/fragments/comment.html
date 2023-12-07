@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+<div class="card mt-2" th:fragment="comment(name, text)">
+    <div class="card-body pb-2">
+        <div class="d-flex flex-start align-items-center">
+            <div>
+                <h6 class="fw-bold text-primary" th:text="${name}"></h6>
+            </div>
+        </div>
+        <p class="mt-2" th:text="${text}"></p>
+    </div>
+</div>
+</body>
+</html>

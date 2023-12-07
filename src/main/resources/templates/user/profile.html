@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/header :: head(${'Профиль ' + user.getLogin()})}"></head>
+<body>
+<div th:replace="fragments/header :: user_navbar"></div>
+<div class="container">
+    <form th:method="PATCH" th:action="@{/user/profile/{id}(id = ${user.getId()})}" th:object="${user}"
+          class="row g-3 needs-validation col-md-8" novalidate>
+        <div class="col-md-6">
+            <label for="name" class="form-label">Логин</label>
+            <input class="form-control" type="hidden" id="login" th:field="*{login}">
+            <input class="form-control" type="text" th:field="*{login}" disabled>
+        </div>
+        <div class="col-md-6">
+            <label for="name" class="form-label">Имя</label>
+            <input class="form-control" type="text" id="name" th:field="*{name}">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label" for="surname">Фамилия</label>
+            <input class="form-control" type="text" id="surname" th:field="*{surname}">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label" for="email">Эл. почта</label>
+            <input class="form-control" type="text" id="email" th:field="*{email}">
+            <div class="invalid-feedback">
+                Пожалуйста, укажите корректную почту
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label" for="phone">Номер телефона</label>
+            <input class="form-control" type="text" id="phone" th:field="*{phone}">
+            <div class="invalid-feedback">
+                Пожалуйста, укажите корректный номер телефона
+            </div>
+        </div>
+        <div class="col-8">
+            <button class="btn btn-primary" type="submit">Обновить</button>
+        </div>
+    </form>
+
+    <h2>Ваша библиотека:</h2>
+</div>
+</body>
+
+<script>
+    (() => {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
+</html>

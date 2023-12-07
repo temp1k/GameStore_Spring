@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/header :: head(${'Корзина'})}"></head>
+<body>
+<div th:replace="fragments/header :: user_navbar"></div>
+<div class="container mt-3">
+    <h2>Ваша корзина:</h2>
+    <div class="row justify-content-center mt-2">
+        <div th:each="game: ${games}" class="card mb-3" style="width: 70%;">
+            <div class="row g-0" style="height: 250px">
+                <div class="col-md-4" style="display: grid; align-items: center">
+                    <img th:src="@{'/img/'+${game.getImage()}}" class="img-fluid rounded-start" style="max-height: 250px" alt="нет картинки">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${game.getName()}">Card title</h5>
+                        <p class="card-text" th:text="${game.getDescription()}">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                        <form th:method="post" th:action="@{/user/game/buy/{id}(id = ${game.getId()})}">
+                            <button class="btn btn-primary" type="submit" th:text="@{'Купить за ' + ${game.getPrice()} + ' руб.'}" onclick="return confirm('Вы уверены, что хотите купить данную игру?')"></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

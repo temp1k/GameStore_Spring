@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/header :: head('Игры')}"></head>
+<body>
+<div th:switch="${role}">
+    <div th:case="'ROLE_USER'">
+        <div th:replace="fragments/header :: user_navbar"></div>
+    </div>
+    <div th:case="'ROLE_ADMIN'">
+        <div th:replace="fragments/header :: admin_navbar"></div>
+    </div>
+    <div th:case="'ROLE_GUEST'">
+        <div th:replace="fragments/header :: guest_navbar"></div>
+    </div>
+
+</div>
+<div class="container">
+    <div class="d-flex row">
+        <div th:each="game: ${games}" class="mt-3 col-md-3">
+            <div class="card border-light" style="width: 200px">
+                <img th:src="@{'/img/'+${game.getImage()}}" alt="Нет картинки :(" width="200px" height="150px">
+                <div class="h4" th:text="${game.getName()}"></div>
+                <div th:text="${game.getPrice() + ' руб'}"></div>
+                <a class="btn btn-primary mt-1" th:href="@{user/game/{id}(id = ${game.getId()})}">Посмотреть</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

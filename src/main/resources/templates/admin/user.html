@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/header :: head(${'Пользователь ' + user.getLogin()})"></head>
+<body>
+<div th:replace="fragments/header :: admin_navbar"></div>
+<div class="container">
+    <form th:method="PATCH" th:action="@{/users/{id}(id = ${user.getId()})}" th:object="${user}"
+          class="row g-3 needs-validation col-md-8" novalidate>
+        <div class="col-md-6">
+            <label for="name" class="form-label">Логин</label>
+            <input class="form-control" type="text" id="login" th:field="*{login}" required>
+        </div>
+        <div class="col-md-6">
+            <label for="name" class="form-label">Роль</label>
+            <select class="form-select" th:field="*{role}">
+                <option th:each="r: ${roles}" th:value="${r.getId()}" th:text="${r.getRole()}"></option>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="name" class="form-label">Имя</label>
+            <input class="form-control" type="text" id="name" th:field="*{name}" required>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label" for="surname">Фамилия</label>
+            <input class="form-control" type="text" id="surname" th:field="*{surname}">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label" for="email">Эл. почта</label>
+            <input class="form-control" type="text" id="email" th:field="*{email}" required>
+            <div class="invalid-feedback">
+                Пожалуйста, укажите корректную почту
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label" for="phone">Номер телефона</label>
+            <input class="form-control" type="text" id="phone" th:field="*{phone}">
+            <div class="invalid-feedback">
+                Пожалуйста, укажите корректный номер телефона
+            </div>
+        </div>
+        <div class="col-8">
+            <button class="btn btn-primary" type="submit">Обновить</button>
+            <button form="deleteUserForm" class="btn btn-danger" type="submit" onclick="return confirm('Вы уверены, что хотите удалть пользователя?')">Удалить</button>
+            <a href="/users" class="btn btn-secondary">Отмена</a>
+        </div>
+    </form>
+    <form id="deleteUserForm"  th:method="DELETE" th:action="@{/users/{id}(id=${user.getId()})}"></form>
+</div>
+</body>
+</html>

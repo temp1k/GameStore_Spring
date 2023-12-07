@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/header :: head(${'Игра ' + gameModel.getName()})"></head>
+<body>
+<div th:replace="fragments/header :: admin_navbar"></div>
+<div class="container">
+    <form th:method="PATCH" th:action="@{/games/{id}(id = ${gameModel.getId()})}" th:object="${gameModel}"
+          class="row g-3 needs-validation col-md-8" enctype="multipart/form-data" novalidate>
+        <div class="col-md-6">
+            <label for="name" class="form-label">Название</label>
+            <input class="form-control" type="text" id="name" th:field="*{name}" required>
+        </div>
+        <div class="col-md-3">
+            <label for="img" class="form-label">Изображение</label>
+            <input type="hidden" th:field="*{nameImage}">
+            <img class="form-control" id="img" alt="нет изображения" th:src="@{'/img/'+${gameModel.getNameImage()}}" style="max-height: 200px;">
+        </div>
+        <div class="col-md-3">
+            <input type="file" class="form-file-input" id="customFile" th:field="*{image}">
+        </div>
+        <div class="col-md-12">
+            <label for="description" class="form-label">Описание</label>
+            <textarea class="form-control" type="text" id="description" th:field="*{description}"></textarea>
+        </div>
+        <div class="col-md-6">
+            <label class="form-label" for="price">Цена</label>
+            <input class="form-control" type="number" id="price" th:field="*{price}">
+        </div>
+        <div class="col-md-6">
+            <label class="form-label" for="developer">Разработчик</label>
+            <input class="form-control" list="developerList" id="developer" placeholder="Введите для поиска..." th:field="*{developer}">
+            <datalist id="developerList">
+                <option th:each="dev: ${developers}" th:value="${dev.getName()}" th:label="${dev.getName()}"></option>
+            </datalist>
+        </div>
+        <div class="col-8">
+            <button class="btn btn-primary" type="submit">Обновить</button>
+            <button form="deleteGameForm" class="btn btn-danger" type="submit" onclick="return confirm('Вы уверены, что хотите удалить игру?')">Удалить</button>
+            <a href="/games" class="btn btn-secondary">Отмена</a>
+        </div>
+    </form>
+    <form id="deleteGameForm"  th:method="DELETE" th:action="@{/games/{id}(id=${gameModel.getId()})}"></form>
+</div>
+
+<script>
+    (() => {
+        'use strict'
+
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        const forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
+</body>
+</html>

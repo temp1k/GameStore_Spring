@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="fragments/header :: head('Пользователи')"></head>
+<body>
+<div th:replace="fragments/header :: admin_navbar"></div>
+
+<div class="container">
+  <div class="mt-3 row">
+    <div th:replace="fragments/canvas :: left_canvas(
+            ${ {'Пользователи', 'Игры', 'Комментарии', 'Производители'} },
+            ${ {'/users', '/games', '/comments', '/developers'} }, 2
+            )">
+    </div>
+    <div class="col-md-9">
+      <table class="table table-success table-striped mt-3">
+        <thead>
+        <tr>
+          <th>#</th>
+          <th>Комментарий</th>
+          <th>От кого</th>
+          <th>Игра</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="com, row: ${comments}">
+          <td th:text="${row.index+1}"></td>
+          <td th:text="${com.getInfo()}"></td>
+          <td th:text="${com.getUser().getLogin()}"></td>
+          <td th:text="${com.getGame().getName()}"></td>
+          <td>
+            <form th:method="DELETE" th:action="@{comments/{id}(id = ${com.getId()})}">
+              <button class="btn btn-danger" type="submit" onclick="return confirm('Вы уверены, что хотите удалить комментарий?')">Удалить</button>
+            </form>
+            <a th:href="@{/comments/show/{id}(id=${com.getId()})}" class="btn btn-light" role="button">Просмотреть</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>
